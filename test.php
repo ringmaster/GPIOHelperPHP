@@ -2,26 +2,28 @@
 
 include 'gpiohelper.php';
 
-$io = new GPIOHelper([1 => GPIOHelper::OUT]);
+$io = new GPIO([1 => GPIO::OUT]);
 
 if(isset($_GET['set'])) {
-	$io->setPin($_GET['set'], 1);	
+	$io->setPin($_GET['set'], 1);
 }
 
 if(isset($_GET['unset'])) {
-	$io->setPin($_GET['unset'], 0);	
+	$io->setPin($_GET['unset'], 0);
 }
 
 if(isset($_GET['toggle'])) {
-	$io->setPin($_GET['toggle'], 1 - $io->getPin($_GET['toggle']));
+	$pinval = $io->getPin($_GET['toggle']);
+	$newpinval = 1 - $pinval;
+	$io->setPin($_GET['toggle'], $newpinval);
 }
 
 if(isset($_GET['direction'])) {
-	if($io->getDirection($_GET['direction']) == GPIOHelper::OUT) {
-		$io->setDirection($_GET['direction'], GPIOHelper::IN);
+	if($io->getDirection($_GET['direction']) == GPIO::OUT) {
+		$io->setDirection($_GET['direction'], GPIO::IN);
 	}
 	else {
-		$io->setDirection($_GET['direction'], GPIOHelper::OUT);
+		$io->setDirection($_GET['direction'], GPIO::OUT);
 	}
 }
 
@@ -44,17 +46,17 @@ if(isset($_GET['direction'])) {
 	<th><a href="?direction=<?= $pin ?>"><?= $io->getDirection($pin) ?></a></th>
 	<th><?= $io->getPin($pin) ?></th>
 	<th>
-	<?php if($io->getDirection($pin) == GPIOHelper::OUT): ?>
+	<?php if($io->getDirection($pin) == GPIO::OUT): ?>
 		<a href="?unset=<?= $pin ?>">Set 0</a>
 	<?php endif; ?>
 	</th>
 	<th>
-	<?php if($io->getDirection($pin) == GPIOHelper::OUT): ?>
+	<?php if($io->getDirection($pin) == GPIO::OUT): ?>
 		<a href="?set=<?= $pin ?>">Set 1</a>
 	<?php endif; ?>
 	</th>
 	<th>
-	<?php if($io->getDirection($pin) == GPIOHelper::OUT): ?>
+	<?php if($io->getDirection($pin) == GPIO::OUT): ?>
 		<a href="?toggle=<?= $pin ?>">Toggle</a>
 	<?php endif; ?>
 	</th>

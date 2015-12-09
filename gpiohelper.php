@@ -23,6 +23,12 @@ abstract class GPIOEvent {
 	}
 }
 
+class GPIOEventClock extends GPIOEvent {
+	public function check() {
+		return true;
+	}
+}
+
 class GPIOEventPinStateChange extends GPIOEvent {
 
 	public $state;
@@ -175,6 +181,10 @@ class GPIO {
 
 	public function onChange($pin, $callback) {
 		$this->events[] = new GPIOEventPinStateChange($this, $pin, $callback);
+	}
+
+	public function onClock($pin, $callback) {
+		$this->events[] = new GPIOEventClock($this, $pin, $callback);
 	}
 
 	public function addComponent($name, $component) {
